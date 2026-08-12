@@ -84,6 +84,13 @@ help trap
 ```
 
 Use it rather than guessing at flags; only the ones listed are implemented.
+`help` on an alias resolves it, so `help ll` shows `ls`.
+
+A plugin or script can add pages for what it defines:
+
+```sh
+describe dsh "open a shell in a container" "dsh <container>"
+```
 
 ## Also available
 
