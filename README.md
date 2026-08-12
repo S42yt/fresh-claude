@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/S42yt/FreSH/master/assets/logo.svg" width="96" alt="FreSH">
+</p>
+
 # fresh-claude
 
 A Claude Code plugin that runs shell commands through

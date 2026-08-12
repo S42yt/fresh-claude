@@ -32,6 +32,8 @@ not cmdlets.
 | `Get-Command x` | `which x` |
 | `Resolve-Path x` | `realpath x` |
 | `Get-FileHash x` | `sha256sum x` |
+| `Invoke-WebRequest -OutFile` | `wget -O file url` |
+| `ForEach-Object { $_.Split(...) }` | `awk '{ print $2 }'` |
 
 Paths take forward slashes. `~` is the home directory.
 
@@ -75,9 +77,22 @@ Write them with the syntax above. A shebang is optional and ignored.
 
 Arrays (`arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A`), `local` in
 functions, here documents, `[[ ... ]]` including `=~`, brace expansion,
-process substitution `<(...)`, `set -e`, `set -u`, `set -x`, `trap`, `jobs`,
-`wait`, and `select`. `grep` and `sed` take real regular expressions, basic by
-default and extended with `-E`.
+process substitution `<(...)` and `>(...)`, `set -e`, `set -u`, `set -x`,
+`trap`, `jobs`, `wait`, and `select`.
+
+`grep` and `sed` take real regular expressions, basic by default and extended
+with `-E`. `awk` is bundled and real: `BEGIN`/`END`, patterns, `$1`, `NR`,
+`NF`, `-F`, `-v`, control flow, `printf`, and `length`/`substr`/`index`/
+`toupper`/`tolower`/`int`.
+
+```sh
+awk -F: '{ print $2, $1 }' pairs.txt
+awk '$2 > 30 { print $1 }' people.txt
+awk '/error/ { n++ } END { print n " errors" }' build.log
+```
+
+`curl` and `tar` are not bundled because Windows already ships both, and they
+resolve on PATH.
 
 FreSH adds `die`, `have`, `say`, `ok` and `warn`, which shorten scripts:
 
@@ -87,11 +102,15 @@ have gcc || die "no compiler"
 say "building"
 ```
 
+`fresh update` upgrades the shell in place. `rehash` rescans PATH and reloads
+themes and plugins after you edit them.
+
 ## Not available
 
 No `fg` or `bg`, and only EXIT, INT and ERR in `trap`. No
-`${var/pattern/replacement}`. `awk`, `tar` and `curl` are not bundled; if they
-are on PATH FreSH will run them.
+`${var/pattern/replacement}`. `awk` has no arrays, `split`, user defined
+functions or `getline`. Anything else you need, install it, put it on PATH and
+run `rehash`; a real executable always beats a bundled one.
 
 ## When something needs PowerShell
 
