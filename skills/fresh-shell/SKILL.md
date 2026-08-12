@@ -73,17 +73,38 @@ warn "skipped tests"        # yellow bang
 FreSH scripts use the `.frsh` extension and run without bash, WSL or MSYS2.
 Write them with the syntax above. A shebang is optional and ignored.
 
+## Finding out what a command takes
+
+`help <command>` prints a description and the argument shape, in the
+`<required> [optional] ...` style:
+
+```sh
+help grep
+help trap
+```
+
+Use it rather than guessing at flags; only the ones listed are implemented.
+
 ## Also available
 
 Arrays (`arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A`), `local` in
 functions, here documents, `[[ ... ]]` including `=~`, brace expansion,
 process substitution `<(...)` and `>(...)`, `set -e`, `set -u`, `set -x`,
-`trap`, `jobs`, `wait`, and `select`.
+and `select`.
+
+Parameter expansion is complete: `${v#pat}` `${v##pat}` `${v%pat}` `${v%%pat}`,
+`${v/a/b}` `${v//a/b}` `${v/#a/b}` `${v/%a/b}`, `${v:off:len}`, `${v^^}`
+`${v,,}`.
+
+Job control: `jobs`, `fg`, `bg`, `wait`, and `stop` (the FreSH stand in for
+Ctrl+Z, which Windows has no key for). `trap` takes EXIT, HUP, INT, QUIT,
+TERM, ERR, DEBUG and RETURN.
 
 `grep` and `sed` take real regular expressions, basic by default and extended
 with `-E`. `awk` is bundled and real: `BEGIN`/`END`, patterns, `$1`, `NR`,
-`NF`, `-F`, `-v`, control flow, `printf`, and `length`/`substr`/`index`/
-`toupper`/`tolower`/`int`.
+`NF`, `-F`, `-v`, control flow, `printf`, `length`/`substr`/`index`/`toupper`/
+`tolower`/`int`, plus arrays with `in` and `delete`, `for (k in a)`, `split`,
+user defined functions with `return`, and `getline`.
 
 ```sh
 awk -F: '{ print $2, $1 }' pairs.txt
@@ -107,10 +128,10 @@ themes and plugins after you edit them.
 
 ## Not available
 
-No `fg` or `bg`, and only EXIT, INT and ERR in `trap`. No
-`${var/pattern/replacement}`. `awk` has no arrays, `split`, user defined
-functions or `getline`. Anything else you need, install it, put it on PATH and
-run `rehash`; a real executable always beats a bundled one.
+Backgrounding a bundled command with `&` runs it in the foreground, since it
+runs inside the shell. No `coproc`, `shopt` or `$'...'`. In awk, no
+`cmd | getline` and no `ENVIRON`. Anything else you need, install it, put it
+on PATH and run `rehash`; a real executable always beats a bundled one.
 
 ## When something needs PowerShell
 
