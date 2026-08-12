@@ -1,0 +1,17 @@
+{
+  "description": "Route shell commands through FreSH when routing is switched on",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/to-fresh.ps1\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

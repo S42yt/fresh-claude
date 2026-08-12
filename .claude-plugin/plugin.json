@@ -1,0 +1,10 @@
+{
+  "name": "fresh-claude",
+  "description": "Run Claude Code shell commands through FreSH instead of PowerShell on Windows",
+  "version": "0.1.0",
+  "author": {
+    "name": "Musa Bostanci"
+  },
+  "homepage": "https://github.com/S42yt/fresh-claude",
+  "license": "GPL-3.0"
+}
