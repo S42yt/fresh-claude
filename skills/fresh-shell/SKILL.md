@@ -71,12 +71,27 @@ warn "skipped tests"        # yellow bang
 FreSH scripts use the `.frsh` extension and run without bash, WSL or MSYS2.
 Write them with the syntax above. A shebang is optional and ignored.
 
+## Also available
+
+Arrays (`arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A`), `local` in
+functions, here documents, `[[ ... ]]` including `=~`, brace expansion,
+process substitution `<(...)`, `set -e`, `set -u`, `set -x`, `trap`, `jobs`,
+`wait`, and `select`. `grep` and `sed` take real regular expressions, basic by
+default and extended with `-E`.
+
+FreSH adds `die`, `have`, `say`, `ok` and `warn`, which shorten scripts:
+
+```sh
+set -e
+have gcc || die "no compiler"
+say "building"
+```
+
 ## Not available
 
-No arrays, no `local`, no here documents, no `[[ ]]`, no process substitution,
-no brace expansion. `sed` handles `s/pattern/replacement/[g]` and `d` only,
-and `grep` matches substrings rather than regular expressions. `awk`, `tar`
-and `curl` are not bundled; if they are on PATH FreSH will run them.
+No `fg` or `bg`, and only EXIT, INT and ERR in `trap`. No
+`${var/pattern/replacement}`. `awk`, `tar` and `curl` are not bundled; if they
+are on PATH FreSH will run them.
 
 ## When something needs PowerShell
 
