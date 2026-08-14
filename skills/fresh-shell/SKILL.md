@@ -50,10 +50,14 @@ noisy-thing > nul 2>&1
 ```
 
 Expansion is POSIX: `$VAR`, `${VAR:-default}`, `${#VAR}`, `$(command)`,
-`$((1 + 2))`, `$?`, `$@`. Globs are `*` and `?`.
+`$((1 + 2))`, `$?`, `$@`. Globs are `*` and `?`. Arithmetic does `** ++ --`,
+ternary, bitwise and assignment, so `(( x += 2 ))` and `for ((i=0;i<n;i++))`
+work. `/dev/null` works as a redirection target.
 
 Control flow is `if/elif/else/fi`, `while`, `until`, `for x in ...`,
-`case ... esac`, and functions with `name() { ...; }`.
+`case ... esac`, and functions with `name() { ...; }`. `:` is the null
+command. Keywords such as `done` are plain words when used as arguments, so
+`echo done` prints `done`.
 
 ## FreSH extensions
 
@@ -94,14 +98,16 @@ describe dsh "open a shell in a container" "dsh <container>"
 
 ## Also available
 
-Arrays (`arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A`), `local` in
-functions, here documents, `[[ ... ]]` including `=~`, brace expansion,
-process substitution `<(...)` and `>(...)`, `set -e`, `set -u`, `set -x`,
-and `select`.
+Arrays (`arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `${arr[@]:1:2}`, `${arr[-1]}`,
+`declare -A`, `declare -i`), `local` in functions, subshells `( ... )`, here
+documents and here-strings `<<<`, `[[ ... ]]` including `=~`, brace expansion
+including `{01..10}`, process substitution `<(...)` and `>(...)`, `$'...'`
+ANSI-C quoting, `set -e`, `set -u`, `set -x`, `set -o pipefail`, `set --`,
+`let`, `select`, and the `:` null command.
 
 Parameter expansion is complete: `${v#pat}` `${v##pat}` `${v%pat}` `${v%%pat}`,
 `${v/a/b}` `${v//a/b}` `${v/#a/b}` `${v/%a/b}`, `${v:off:len}`, `${v^^}`
-`${v,,}`.
+`${v,,}`, `${!indirect}`.
 
 Job control: `jobs`, `fg`, `bg`, `wait`, and `stop` (the FreSH stand in for
 Ctrl+Z, which Windows has no key for). `trap` takes EXIT, HUP, INT, QUIT,
@@ -136,9 +142,9 @@ themes and plugins after you edit them.
 ## Not available
 
 Backgrounding a bundled command with `&` runs it in the foreground, since it
-runs inside the shell. No `coproc`, `shopt` or `$'...'`. In awk, no
-`cmd | getline` and no `ENVIRON`. Anything else you need, install it, put it
-on PATH and run `rehash`; a real executable always beats a bundled one.
+runs inside the shell. No `coproc` or `shopt`. In awk, no `cmd | getline` and
+no `ENVIRON`. Anything else you need, install it, put it on PATH and run
+`rehash`; a real executable always beats a bundled one.
 
 ## When something needs PowerShell
 
